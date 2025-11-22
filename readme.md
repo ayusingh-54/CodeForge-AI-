@@ -1,3 +1,115 @@
+# CodeForge-AI — Agents Without Frameworks
+
+> Everyone uses frameworks, but I wanted to understand the core logic.
+
+CodeForge-AI is my bare-metal exploration of what it takes to build an autonomous coding agent **without** leaning on LangChain, LangGraph, or any orchestration framework. It is pure Python wrapped around OpenAI's API and the ReAct (Reason + Act) pattern, so you can see—step by step—how the planning loop works.
+
+🔗 Check out the raw logic here: [CodeForge-AI](https://github.com/ayusingh-54/CodeForge-AI)
+
+---
+
+## Why This Exists
+
+- **Future-proof skills**: Building agents will be the next baseline ability for software engineers.
+- **No glue code**: Every interaction with the model is handwritten; you can trace the entire reasoning loop.
+- **ReAct under the hood**: Observe how thoughts become actions, how outputs are evaluated, and how the loop continues.
+
+If you have only ever wired components together, this project shows what lives underneath the abstractions.
+
+---
+
+## Core Ideas
+
+| Concept               | What to Notice                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| **Reason → Act loop** | The agent plans, executes a tool, inspects results, and iterates until the goal is met.        |
+| **Lean toolbelt**     | File IO, code search, git helpers, and command execution are implemented from scratch.         |
+| **Transparent state** | Conversation history and workspace context are explicitly managed in `ayuverse/core/state.py`. |
+
+The priority is clarity over cleverness—every file is short, readable, and hackable.
+
+---
+
+## Quick Start (PowerShell)
+
+```powershell
+# Clone
+git clone https://github.com/ayusingh-54/CodeForge-AI.git
+cd CodeForge-AI
+
+# Environment
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+# Configure your keys
+notepad .env
+# Add: OPENAI_API_KEY=sk-...
+
+# Run the CLI agent
+python main.py
+```
+
+> Tip: keep temperature low (`0.1`) when you want deterministic coding sessions.
+
+---
+
+## ReAct Loop in Practice
+
+```mermaid
+flowchart TD
+   A[Reason] -->|Plan next action| B[Act]
+   B -->|Execute tool| C[Observe]
+   C -->|Evaluate outcome| D{Goal met?}
+   D -- No --> A
+   D -- Yes --> E[Finish]
+```
+
+This diagram maps directly onto `CodeForgeAgent.invoke()` in `ayuverse/core/agent.py`. Read the function and you will see how prompts, tool invocations, and state transitions line up with the chart.
+
+---
+
+## Project Layout
+
+```
+CodeForge-AI/
+├─ main.py                  # Entry point and session bootstrap
+├─ ayuverse/
+│  ├─ core/
+│  │  ├─ agent.py           # Minimal ReAct agent
+│  │  └─ state.py           # Conversation + workspace state
+│  ├─ tools/
+│  │  ├─ registry.py        # Maps tool names to implementations
+│  │  └─ tools.py           # File, git, shell, and search tools
+│  ├─ ui/cli.py             # Rich-powered CLI loop
+│  └─ utils/helpers.py      # Small utility helpers
+└─ Frontend/                # Optional web client prototype
+```
+
+The goal is approachability: you can read the entire core loop in a single sitting.
+
+---
+
+## What You Can Do
+
+- Ask the agent to scaffold scripts, refactor modules, or patch files using natural language.
+- Inspect the intermediate reasoning steps—it prints every thought/action pair.
+- Extend the toolbelt by adding new functions to `tools.py` and registering them. The registry is intentionally lightweight so experimentation is fast.
+
+---
+
+## Roadmap
+
+- Sharpen evaluation heuristics for multi-step plans.
+- Expand the frontend into a full agent dashboard.
+- Experiment with alternative LLMs while keeping the same loop.
+
+Star the repo or open an issue if you want to jam on ideas. I am especially interested in contributions that keep the code transparent and framework-free.
+
+---
+
+**Tags:** #Python #OpenAI #ReAct #AI #SoftwareEngineering #NoCodeFrameworks
+
 # 🔥 CodeForge AI — ayuverse# 🔥 CodeForge AI — ayuverse# 🔥 CodeForge AI — ayuverse# 🔥 CodeForge AI — ayuverse
 
 > **Your Intelligent AI-Powered Coding Companion** > **Your Intelligent AI-Powered Coding Companion** > **Your Intelligent AI-Powered Coding Companion** > **Your Intelligent AI-Powered Coding Companion**
